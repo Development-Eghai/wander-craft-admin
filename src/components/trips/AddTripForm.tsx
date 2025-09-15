@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -12,6 +13,7 @@ import {
   AlertCircle,
   Info
 } from "lucide-react";
+import { toast } from "sonner";
 
 // Import tab components
 import { BasicInfoTab } from "./tabs/BasicInfoTab";
@@ -31,8 +33,10 @@ const tabs = [
 ];
 
 export function AddTripForm() {
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("basic");
   const [completedTabs, setCompletedTabs] = useState<string[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     // Basic Info
     tripTitle: "",
@@ -88,6 +92,26 @@ export function AddTripForm() {
   };
 
   const progress = (completedTabs.length / tabs.length) * 100;
+
+  const handlePublish = async () => {
+    setIsLoading(true);
+    try {
+      // Simulate API call to save trip data
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      // Generate a unique trip ID (in real app, this would come from the API response)
+      const tripId = Math.random().toString(36).substring(2, 8);
+      
+      toast.success("Trip published successfully!");
+      
+      // Navigate to the published trip page
+      navigate(`/trip/${tripId}`);
+    } catch (error) {
+      toast.error("Failed to publish trip. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <div className="space-y-6">
@@ -203,11 +227,12 @@ export function AddTripForm() {
                   Preview
                 </Button>
                 <Button 
-                  disabled={progress < 100}
+                  disabled={progress < 100 || isLoading}
                   className="bg-green-600 hover:bg-green-700"
+                  onClick={handlePublish}
                 >
                   <Send className="h-4 w-4 mr-2" />
-                  Publish Trip
+                  {isLoading ? "Publishing..." : "Publish Trip"}
                 </Button>
               </div>
             </div>

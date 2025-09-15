@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { DashboardOverview } from "@/components/dashboard/DashboardOverview";
 import { AddTripForm } from "@/components/trips/AddTripForm";
+import TripDetails from "@/pages/TripDetails";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -16,14 +17,19 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <DashboardLayout>
-          <Routes>
-            <Route path="/" element={<DashboardOverview />} />
-            <Route path="/trips/add" element={<AddTripForm />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </DashboardLayout>
+        <Routes>
+          <Route path="/trip/:id" element={<TripDetails />} />
+          <Route path="/*" element={
+            <DashboardLayout>
+              <Routes>
+                <Route path="/" element={<DashboardOverview />} />
+                <Route path="/trips/add" element={<AddTripForm />} />
+                {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </DashboardLayout>
+          } />
+        </Routes>
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
