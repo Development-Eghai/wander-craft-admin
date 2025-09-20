@@ -7,6 +7,7 @@ import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { DashboardOverview } from "@/components/dashboard/DashboardOverview";
 import { AddTripForm } from "@/components/trips/AddTripForm";
 import TripDetails from "@/pages/TripDetails";
+import LeadsManagement from "@/pages/LeadsManagement";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -24,6 +25,7 @@ const App = () => (
               <Routes>
                 <Route path="/" element={<DashboardOverview />} />
                 <Route path="/trips/add" element={<AddTripForm />} />
+                <Route path="/leads" element={<LeadsManagement />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />
               </Routes>

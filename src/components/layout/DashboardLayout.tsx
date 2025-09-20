@@ -36,14 +36,23 @@ const sidebarItems = [
   { icon: Building2, label: "Hotels Listed", id: "hotels", path: "/hotels" },
   { icon: Calendar, label: "Activities", id: "activities", path: "/activities" },
   { icon: Package, label: "Cab Booking", id: "cab-booking", path: "/cab-booking" },
-  { icon: Users, label: "Leads", id: "leads", path: "/leads" },
-  { icon: MessageSquare, label: "Quotations", id: "quotations", path: "/quotations" },
+  { 
+    icon: Users, 
+    label: "Travel CRM", 
+    id: "crm",
+    children: [
+      { label: "Leads", id: "leads", path: "/leads" },
+      { label: "Quotations", id: "quotations", path: "/quotations" },
+      { label: "Invoices", id: "invoices", path: "/invoices" },
+      { label: "Bookings", id: "bookings", path: "/bookings" }
+    ]
+  },
   { icon: Settings, label: "Settings", id: "settings", path: "/settings" },
 ];
 
 export function DashboardLayout({ children }: DashboardLayoutProps) {
   const [collapsed, setCollapsed] = useState(false);
-  const [expandedItems, setExpandedItems] = useState<string[]>(["trips"]);
+  const [expandedItems, setExpandedItems] = useState<string[]>(["trips", "crm"]);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -67,11 +76,11 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
   const activeItem = getActiveItem();
 
   const toggleExpanded = (id: string) => {
-    setExpandedItems(prev => 
-      prev.includes(id) 
-        ? prev.filter(item => item !== id)
-        : [...prev, id]
-    );
+        setExpandedItems(prev => 
+          prev.includes(id) 
+            ? prev.filter(item => item !== id)
+            : [...prev, id]
+        );
   };
 
   const handleNavigation = (item: any) => {
@@ -94,8 +103,10 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
       case "hotels": return "Hotels Listed";
       case "activities": return "Activities";
       case "cab-booking": return "Cab Booking";
-      case "leads": return "Leads";
-      case "quotations": return "Quotations";
+      case "leads": return "Lead Management";
+      case "quotations": return "Quotation Management";
+      case "invoices": return "Invoice Management";
+      case "bookings": return "Booking Management";
       case "settings": return "Settings";
       default: return "Dashboard";
     }
@@ -107,6 +118,10 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
       case "add-trip": return "Create a new travel package with detailed information";
       case "all-trips": return "Manage all your travel packages and itineraries";
       case "categories": return "Organize your trips by categories and themes";
+      case "leads": return "Manage and track your customer leads from inquiry to booking";
+      case "quotations": return "Create and manage travel quotations for your clients";
+      case "invoices": return "Generate and track invoices for your bookings";
+      case "bookings": return "Manage confirmed bookings and customer details";
       default: return "Manage your travel business efficiently";
     }
   };
